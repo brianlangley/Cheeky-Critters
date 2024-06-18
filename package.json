@@ -1,0 +1,21 @@
+{
+  "name": "cheeky-critters",
+  "version": "1.0.0",
+  "description": "A phaser.io game inspired by Angry Birds and Happy Tree Friends",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "watch": "webpack --watch --mode development",
+    "build": "rm -rf dist && mkdir -p dist && cp -r src/* dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^3.80.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.92.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
