@@ -6,7 +6,7 @@
   - [Table of Contents](#table-of-contents)
   - [Getting Started](#getting-started)
     - [About project](#about-project)
-      - [Design document](#design-document)
+    - [Design document](#design-document)
   - [Development Environment](#development-environment)
     - [Hardware Specifications](#hardware-specifications)
     - [Software and Tools](#software-and-tools)
@@ -32,7 +32,7 @@ This project is a simple game inspired by Angry Birds and Happy Tree Friends. Th
 
 Based on the successfully acclaimed game Angry Birds, the player has to launch a critter from a slingshot to hit the target. The critter will bounce off the walls and obstacles until it hits the target. The player has to use the critter's bounces to hit the target in the fewest possible moves.
 
-#### Design document
+### Design document
 To get a clear understanding of the game's intended design and mechanics, please refer to the [design document](./docs/Cheeky%20Critters%20Project%20Design.pdf).
 
 ## Development Environment
