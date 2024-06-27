@@ -27,10 +27,11 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("background2", "./assets/textures/background/02.jpg");
     this.load.image("background3", "./assets/textures/background/03.jpg");
     this.load.image("background4", "./assets/textures/background/04.jpg");
+    this.load.image("menuBackground", "./assets/textures/background/menu.png");
 
     // Ground
     this.load.image("ground1", "./assets/textures/ground/01.jpg");
-    this.load.image("ground2", "./assets/textures/ground/02.jpg");
+    this.load.image("ground2", "./assets/textures/ground/02.png");
     this.load.image("ground3", "./assets/textures/ground/03.jpg");
 
     // Effects
@@ -122,9 +123,6 @@ export default class PreloadScene extends Phaser.Scene {
       "backgroundSounds",
       "./assets/audio/game/background_loop.mp3"
     );
-
-    // Font
-    this.load.bitmapFont("font", "./assets/font/main.ttf");
   }
 
   // Create function to set up the game scene
