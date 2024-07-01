@@ -46,17 +46,39 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   playLogoSequence(bestEdLogo, bestEdMusic, brianLogo, brianMusic) {
+
+    const bestEdSlogan = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2 + 100,
+        "Wij lanceren je de toekomst in!",
+        {
+          fontFamily: "Arial",
+          fontSize: "24px",
+          color: "#ffffff",
+        }
+      )
+      .setOrigin(0.5, -4)
+      .setAlpha(0);
     this.tweens.add({
       targets: bestEdLogo,
       alpha: 1,
       duration: 2000,
+      onStart: () => {
+        this.tweens.add({
+          targets: bestEdSlogan,
+          alpha: 1,
+          duration: 2000,
+        });
+      },
       onComplete: () => {
         bestEdMusic.play();
         this.time.delayedCall(bestEdMusic.duration * 500, () => {
           this.tweens.add({
-            targets: bestEdLogo,
+            targets: [bestEdLogo, bestEdSlogan],
             alpha: 0,
             duration: 2000,
+            // text under the logo
             onComplete: () => {
               brianMusic.play();
               this.tweens.add({
@@ -109,10 +131,10 @@ export default class MenuScene extends Phaser.Scene {
         key: "menuBackgroundAnim",
         frames: this.anims.generateFrameNumbers("menuBackground", {
           start: 0,
-          end: 0,
-        }), // Adjust end frame based on your spritesheet
-        frameRate: 10, // Adjust according to the desired animation speed
-        repeat: -1, // Loop forever
+          end: 1,
+        }), 
+        frameRate: 24, 
+        repeat: -1, 
       });
     }
 
