@@ -3,161 +3,189 @@ import Phaser from "phaser";
 export default class MenuScene extends Phaser.Scene {
   constructor() {
     super({ key: "MenuScene" });
+    this.logoSequenceCompleted = false;
   }
 
   create() {
     // For testing, skip menu and scene directly to the game
-    // this.scene.start("GameScene");
+    this.scene.start("GameScene");
 
     // Uncomment when deploying to production
-    this.cameras.main.setBackgroundColor("#1A1818");
+    //   this.cameras.main.setBackgroundColor("#1A1818");
 
-    const instructionText = this.add
-      .text(
-        this.scale.width / 2,
-        this.scale.height / 2,
-        "Press mouse down to begin",
-        {
-          fontFamily: "Arial",
-          fontSize: "32px",
-          color: "#ffffff",
-        }
-      )
-      .setOrigin(0.5);
+    //   const instructionText = this.add
+    //     .text(
+    //       this.scale.width / 2,
+    //       this.scale.height / 2,
+    //       "Press mouse down to begin",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "32px",
+    //         color: "#ffffff",
+    //       }
+    //     )
+    //     .setOrigin(0.5);
 
-    const bestEdLogo = this.add
-      .image(this.scale.width / 2, this.scale.height / 2, "BestEdLogo")
-      .setScale(0.2)
-      .setAlpha(0);
+    //   const bestEdLogo = this.add
+    //     .image(this.scale.width / 2, this.scale.height / 2, "BestEdLogo")
+    //     .setScale(0.2)
+    //     .setAlpha(0);
 
-    const brianLogo = this.add
-      .image(this.scale.width / 2, this.scale.height / 2, "BrianLogo")
-      .setScale(0.5)
-      .setAlpha(0);
+    //   const brianLogo = this.add
+    //     .image(this.scale.width / 2, this.scale.height / 2, "BrianLogo")
+    //     .setScale(0.5)
+    //     .setAlpha(0);
 
-    const bestEdMusic = this.sound.add("BestEdMusic", { loop: false });
-    const brianMusic = this.sound.add("BrianMusic", { loop: false });
+    //   this.bestEdMusic = this.sound.add("BestEdMusic", { loop: false });
+    //   this.brianMusic = this.sound.add("BrianMusic", { loop: false });
 
-    // click on body element to trigger the music
-    document.body.addEventListener("mousedown", () => {
-      instructionText.destroy(); // Remove the instruction text
-      this.playLogoSequence(bestEdLogo, bestEdMusic, brianLogo, brianMusic);
-    });
-  }
+    //   // click on body element to trigger the music
+    //   document.body.addEventListener("mousedown", () => {
+    //     if (!this.logoSequenceCompleted) {
+    //       instructionText.destroy(); // Remove the instruction text
+    //       this.playLogoSequence(
+    //         bestEdLogo,
+    //         this.bestEdMusic,
+    //         brianLogo,
+    //         this.brianMusic
+    //       );
+    //     }
+    //   });
+    // }
 
-  playLogoSequence(bestEdLogo, bestEdMusic, brianLogo, brianMusic) {
+    // playLogoSequence(bestEdLogo, bestEdMusic, brianLogo, brianMusic) {
+    //   const bestEdSlogan = this.add
+    //     .text(
+    //       this.scale.width / 2,
+    //       this.scale.height / 2 + 100,
+    //       "Wij lanceren je de toekomst in!",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "24px",
+    //         color: "#ffffff",
+    //       }
+    //     )
+    //     .setOrigin(0.5, -4)
+    //     .setAlpha(0);
+    //   this.tweens.add({
+    //     targets: bestEdLogo,
+    //     alpha: 1,
+    //     duration: 2000,
+    //     onStart: () => {
+    //       this.tweens.add({
+    //         targets: bestEdSlogan,
+    //         alpha: 1,
+    //         duration: 2000,
+    //       });
+    //     },
+    //     onComplete: () => {
+    //       bestEdMusic.play();
+    //       this.time.delayedCall(bestEdMusic.duration * 500, () => {
+    //         this.tweens.add({
+    //           targets: [bestEdLogo, bestEdSlogan],
+    //           alpha: 0,
+    //           duration: 2000,
+    //           // text under the logo
+    //           onComplete: () => {
+    //             brianMusic.play();
+    //             this.tweens.add({
+    //               targets: brianLogo,
+    //               alpha: 1,
+    //               duration: 2000,
+    //               onComplete: () => {
+    //                 this.time.delayedCall(brianMusic.duration * 500, () => {
+    //                   this.tweens.add({
+    //                     targets: brianLogo,
+    //                     alpha: 0,
+    //                     duration: 2000,
+    //                     onComplete: () => {
+    //                       this.logoSequenceCompleted = true;
+    //                       this.showMainMenu();
+    //                     },
+    //                   });
+    //                 });
+    //               },
+    //             });
+    //           },
+    //         });
+    //       });
+    //     },
+    //   });
+    // }
 
-    const bestEdSlogan = this.add
-      .text(
-        this.scale.width / 2,
-        this.scale.height / 2 + 100,
-        "Wij lanceren je de toekomst in!",
-        {
-          fontFamily: "Arial",
-          fontSize: "24px",
-          color: "#ffffff",
-        }
-      )
-      .setOrigin(0.5, -4)
-      .setAlpha(0);
-    this.tweens.add({
-      targets: bestEdLogo,
-      alpha: 1,
-      duration: 2000,
-      onStart: () => {
-        this.tweens.add({
-          targets: bestEdSlogan,
-          alpha: 1,
-          duration: 2000,
-        });
-      },
-      onComplete: () => {
-        bestEdMusic.play();
-        this.time.delayedCall(bestEdMusic.duration * 500, () => {
-          this.tweens.add({
-            targets: [bestEdLogo, bestEdSlogan],
-            alpha: 0,
-            duration: 2000,
-            // text under the logo
-            onComplete: () => {
-              brianMusic.play();
-              this.tweens.add({
-                targets: brianLogo,
-                alpha: 1,
-                duration: 2000,
-                onComplete: () => {
-                  this.time.delayedCall(brianMusic.duration * 500, () => {
-                    this.tweens.add({
-                      targets: brianLogo,
-                      alpha: 0,
-                      duration: 2000,
-                      onComplete: () => {
-                        this.showMainMenu();
-                      },
-                    });
-                  });
-                },
-              });
-            },
-          });
-        });
-      },
-    });
-  }
+    // showMainMenu() {
+    //   const themeMusic = this.sound.add("menuTheme", {
+    //     loop: false,
+    //     volume: 0.2,
+    //   });
 
-  showMainMenu() {
-    const themeMusic = this.sound.add("menuTheme", {
-      loop: false,
-      volume: 0.3,
-    });
+    //   this.cameras.main.fadeIn(2000);
+    //   themeMusic.play();
 
-    this.cameras.main.fadeIn(2000);
-    themeMusic.play();
+    //   const backgroundImage = this.add.image(
+    //     this.scale.width / 2,
+    //     this.scale.height / 2,
+    //     "menuBackground"
+    //   );
 
-    // Assuming the spritesheet for the GIF has been loaded correctly in the preload method
-    // Create the sprite from the loaded spritesheet
-    const bg = this.add.sprite(0, 0, "menuBackground").setOrigin(0, 0);
+    //   // Calculate the scale factor to cover the screen
+    //   const scaleX = this.scale.width / backgroundImage.width;
+    //   const scaleY = this.scale.height / backgroundImage.height;
+    //   const scale = Math.max(scaleX, scaleY);
+    //   backgroundImage.setScale(scale).setScrollFactor(0);
 
-    // Calculate the scale ratio to make the background fill the width
-    const scaleRatio = this.scale.width / bg.width;
-    bg.setScale(scaleRatio).setScrollFactor(0);
+    //   this.tweens.add({
+    //     targets: backgroundImage,
+    //     alpha: 1,
+    //     scale: scale * 1.2, // Adjust the scale to zoom in
+    //     duration: 2000,
+    //     ease: "Power2",
+    //   });
 
-    // Adjust the height position based on the new scale
-    bg.y = (this.scale.height - bg.height * scaleRatio) / 2;
+    //   // Create the button background
+    //   this.startButtonBackground = this.add.graphics();
+    //   this.startButtonBackground.fillStyle(0xff0000, 1);
+    //   this.startButtonBackground.fillRoundedRect(
+    //     this.scale.width / 2 - 150,
+    //     (this.scale.height * 3) / 4 - 40,
+    //     300,
+    //     80,
+    //     20
+    //   );
 
-    // Create an animation from the spritesheet if not already created
-    if (!this.anims.get("menuBackgroundAnim")) {
-      this.anims.create({
-        key: "menuBackgroundAnim",
-        frames: this.anims.generateFrameNumbers("menuBackground", {
-          start: 0,
-          end: 1,
-        }), 
-        frameRate: 24, 
-        repeat: -1, 
-      });
-    }
+    //   // Game start button
+    //   this.startButtonText = this.add
+    //     .text(this.scale.width / 2, (this.scale.height * 3) / 4, "Begin game", {
+    //       fontFamily: "Arial",
+    //       fontSize: "48px",
+    //       color: "#ffffff",
+    //     })
+    //     .setOrigin(0.5)
+    //     .setInteractive()
+    //     .on("pointerdown", () => {
+    //       // Stop music from playing more than once
+    //       if (this.bestEdMusic.isPlaying) {
+    //         this.bestEdMusic.stop();
+    //       }
+    //       if (this.brianMusic.isPlaying) {
+    //         this.brianMusic.stop();
+    //       }
+    //       themeMusic.stop(); // Stop the menu theme music
+    //       this.tweens.add({
+    //         targets: [this.startButtonBackground, this.startButtonText],
+    //         scaleX: 1,
+    //         scaleY: 1,
+    //         duration: 100,
+    //         onComplete: () => {
+    //           this.cameras.main.fadeOut(0, 0, 0, 0, () => {
+    //             this.scene.start("GameScene");
+    //           });
+    //         },
+    //       });
+    //     });
 
-    // Play the created animation
-    bg.play("menuBackgroundAnim");
-
-    this.startButton = this.add
-      .text(this.scale.width / 2, this.scale.height / 4, "Start", {
-        fontFamily: "Arial",
-        fontSize: "48px",
-        color: "#ffffff",
-      })
-      .setOrigin(0.5)
-      .setInteractive()
-      .on("pointerdown", () => {
-        themeMusic.stop(); // Stop the music
-        this.cameras.main.fadeOut(1000, 0, 0, 0, () => {
-          this.scene.start("GameScene");
-        });
-      });
-
-    this.add
-      .image(this.scale.width - 100, this.scale.height - 100, "BestEdLogo")
-      .setScale(0.1);
+    //   this.add
+    //     .image(this.scale.width - 100, this.scale.height - 100, "BestEdLogo")
+    //     .setScale(0.1);
   }
 }

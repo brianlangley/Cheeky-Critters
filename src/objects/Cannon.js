@@ -4,12 +4,11 @@ export default class Cannon {
   constructor(scene, x, y) {
     this.scene = scene;
     this.barrel = scene.add.sprite(x, y, "cannonBarrel").setOrigin(0.3, 0.5);
-    this.base = scene.add.sprite(x, y, "cannonBase").setOrigin(0.3, 0);
+    this.base = scene.add.sprite(x, y, "cannonBase").setOrigin(0.3, -0.3);
     this.barrel.setInteractive();
     this.aimLine = this.scene.add.graphics({ x: 0, y: 0 }).setDepth(-1); // Ensure the aim line is behind the cannon
-    this.aimLine.setAlpha(0.5);
+    this.aimLine.setAlpha(0);
     this.setupEvents();
-
     // Scale the cannon to a suitable size
     this.base.setScale(0.2);
     this.barrel.setScale(0.2);
@@ -28,23 +27,22 @@ export default class Cannon {
   }
 
   aim(pointer) {
-    this.aimLine.clear();
-    const angle = Phaser.Math.Angle.Between(
-      this.barrel.x,
-      this.barrel.y,
-      pointer.x,
-      pointer.y
-    );
 
-    // Start the aim line from the base of the cannon
-    const baseX = this.base.x;
-    const baseY = this.base.y;
+    // Calculate the angle between the cannon and the pointer
+    const angle = Phaser.Math.Angle.BetweenPoints(this.barrel, pointer);
+    this.barrel.rotation = angle;
 
-    this.aimLine.lineStyle(2, 0xff0000);
-    this.aimLine.beginPath();
-    this.aimLine.moveTo(baseX, baseY);
-    this.aimLine.lineTo(pointer.x, pointer.y);
+    // Make sure the cannon is pointing in the right direction and tracks the pointer
+    const barrelEndX = this.base.x + Math.cos(angle) * 100;
+    const barrelEndY = this.base.y + Math.sin(angle) * 100;
+    this.aimLine.lineTo(barrelEndX, barrelEndY);
     this.aimLine.strokePath();
+
+    // Draw the aim line
+    this.aimLine.clear();
+    this.aimLine.lineStyle(2, 0xffffff);
+    this.aimLine.beginPath();
+    this.aimLine.moveTo(this.base.x, this.base.y);
   }
 
   shoot(pointer) {
