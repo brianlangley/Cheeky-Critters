@@ -119,10 +119,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio("gameOver", "./assets/audio/game/lose.mp3");
     this.load.audio("gameWin", "./assets/audio/game/win.mp3");
     this.load.audio("gameStart", "./assets/audio/game/round_begin.mp3");
-    this.load.audio(
-      "backgroundSounds",
-      "./assets/audio/game/background_loop.mp3"
-    );
+    this.load.audio("ambience", "./assets/audio/game/background_loop.mp3");
   }
 
   // Create function to set up the game scene
