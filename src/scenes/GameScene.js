@@ -39,7 +39,7 @@ export default class GameScene extends Phaser.Scene {
       )
       .setOrigin(0, 0);
 
-    // If you need the ground to have physics
+    // If you need the ground to have physics (necessary for collisions of objects with the ground, e.g. player and enemies)
     this.physics.add.existing(ground, true);
     ground.body.setSize(this.scale.width, groundHeight, false).setOffset(0, 0);
     ground.body.immovable = true;
