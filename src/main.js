@@ -10,14 +10,14 @@ class MainGame {
     // Game configuration object
     const config = {
       type: Phaser.AUTO, // Automatically detect the rendering context
-    // Ensure the game canvas is resized to fit the screen
-    scale: {
-      mode: Phaser.Scale.FIT, 
-      autoCenter: Phaser.Scale.CENTER_BOTH, 
-      width: window.innerWidth, 
-      height: window.innerHeight, 
-    },
-    physics: {
+      // Ensure the game canvas is resized to fit the screen
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
+      physics: {
         // Physics engine configuration
         default: "arcade",
         arcade: {
