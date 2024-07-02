@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Cannon from "../objects/Cannon";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -8,7 +9,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
     this.cameras.main.fadeIn(1000);
 
-    //  Background music ambience loop
+    // Background music ambience loop
     this.sound.play("ambience", { loop: true, volume: 0.2 });
 
     const backgrounds = [
@@ -22,13 +23,13 @@ export default class GameScene extends Phaser.Scene {
     const backgroundTexture = Phaser.Utils.Array.GetRandom(backgrounds);
     const groundTexture = Phaser.Utils.Array.GetRandom(grounds);
 
-    // Background
+    // Add background
     const bg = this.add.image(0, 0, backgroundTexture).setOrigin(0, 0);
     bg.displayWidth = this.scale.width;
     bg.displayHeight = this.scale.height;
 
-    // Ground as a TileSprite
-    const groundHeight = this.scale.height * 0.25; // 25% of the scene's height
+    // Add ground
+    const groundHeight = this.scale.height * 0.25;
     const ground = this.add
       .tileSprite(
         0,
@@ -39,9 +40,15 @@ export default class GameScene extends Phaser.Scene {
       )
       .setOrigin(0, 0);
 
-    // If you need the ground to have physics (necessary for collisions of objects with the ground, e.g. player and enemies)
+    // Add physics to ground
     this.physics.add.existing(ground, true);
     ground.body.setSize(this.scale.width, groundHeight, false).setOffset(0, 0);
     ground.body.immovable = true;
+
+    // Make ground accessible to Cannon class
+    this.ground = ground;
+
+    // Add cannon
+    this.cannon = new Cannon(this, 100, this.scale.height - groundHeight - 50);
   }
 }

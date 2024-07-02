@@ -27,7 +27,10 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("background2", "./assets/textures/background/02.jpg");
     this.load.image("background3", "./assets/textures/background/03.jpg");
     this.load.image("background4", "./assets/textures/background/04.jpg");
-    this.load.image("menuBackground", "./assets/textures/background/menu.png");
+    this.load.image(
+      "menuBackground",
+      "./assets/textures/background/menuBackground.gif"
+    );
 
     // Ground
     this.load.image("ground1", "./assets/textures/ground/01.jpg");
@@ -35,13 +38,14 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("ground3", "./assets/textures/ground/03.jpg");
 
     // Effects
-    this.load.image("cannon", "./assets/textures/effects/cannon.gif");
+    this.load.image("cannonShot", "./assets/textures/effects/cannon.gif");
     this.load.image("fireball", "./assets/textures/effects/fireball.gif");
-    this.load.image("impact", "./assets/textures/effects/impact.gif");
+    this.load.image("cannonImpact", "./assets/textures/effects/impact.gif");
 
     // Sprites
     //  Cannon
-    this.load.image("cannon", "./assets/sprites/cannon/cannon.png");
+    this.load.image("cannonBarrel", "./assets/sprites/cannon/CannonBarrel.png");
+    this.load.image("cannonBase", "./assets/sprites/cannon/CannonBase.png");
 
     // Enemies
     this.load.image("enemy1", "./assets/sprites/enemies/1.png");
@@ -105,9 +109,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio("taunt", "./assets/audio/enemy/taunt.mp3");
 
     // Effects
-    this.load.audio("cannonFire", "./assets/audio/effects/cannon.mp3");
     this.load.audio("bounce", "./assets/audio/effects/bounce.mp3");
-    this.load.audio("explosion", "./assets/audio/effects/explosion.mp3");
+    this.load.audio("cannonShot", "./assets/audio/effects/explosion.mp3");
     this.load.audio("woodDamage", "./assets/audio/effects/wood_damage.mp3");
     this.load.audio(
       "woodDestroyed",
@@ -116,6 +119,7 @@ export default class PreloadScene extends Phaser.Scene {
 
     // Game sounds
     this.load.audio("theme", "./assets/audio/game/theme.mp3");
+    this.load.audio("menuTheme", "./assets/audio/game/MenuIntro.mp3");
     this.load.audio("gameOver", "./assets/audio/game/lose.mp3");
     this.load.audio("gameWin", "./assets/audio/game/win.mp3");
     this.load.audio("gameStart", "./assets/audio/game/round_begin.mp3");

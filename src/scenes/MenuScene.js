@@ -3,6 +3,7 @@ import Phaser from "phaser";
 export default class MenuScene extends Phaser.Scene {
   constructor() {
     super({ key: "MenuScene" });
+    this.logoSequenceCompleted = false;
   }
 
   create() {
@@ -35,28 +36,56 @@ export default class MenuScene extends Phaser.Scene {
     //     .setScale(0.5)
     //     .setAlpha(0);
 
-    //   const bestEdMusic = this.sound.add("BestEdMusic", { loop: false });
-    //   const brianMusic = this.sound.add("BrianMusic", { loop: false });
+    //   this.bestEdMusic = this.sound.add("BestEdMusic", { loop: false });
+    //   this.brianMusic = this.sound.add("BrianMusic", { loop: false });
 
     //   // click on body element to trigger the music
     //   document.body.addEventListener("mousedown", () => {
-    //     instructionText.destroy(); // Remove the instruction text
-    //     this.playLogoSequence(bestEdLogo, bestEdMusic, brianLogo, brianMusic);
+    //     if (!this.logoSequenceCompleted) {
+    //       instructionText.destroy(); // Remove the instruction text
+    //       this.playLogoSequence(
+    //         bestEdLogo,
+    //         this.bestEdMusic,
+    //         brianLogo,
+    //         this.brianMusic
+    //       );
+    //     }
     //   });
     // }
 
     // playLogoSequence(bestEdLogo, bestEdMusic, brianLogo, brianMusic) {
+    //   const bestEdSlogan = this.add
+    //     .text(
+    //       this.scale.width / 2,
+    //       this.scale.height / 2 + 100,
+    //       "Wij lanceren je de toekomst in!",
+    //       {
+    //         fontFamily: "Arial",
+    //         fontSize: "24px",
+    //         color: "#ffffff",
+    //       }
+    //     )
+    //     .setOrigin(0.5, -4)
+    //     .setAlpha(0);
     //   this.tweens.add({
     //     targets: bestEdLogo,
     //     alpha: 1,
     //     duration: 2000,
+    //     onStart: () => {
+    //       this.tweens.add({
+    //         targets: bestEdSlogan,
+    //         alpha: 1,
+    //         duration: 2000,
+    //       });
+    //     },
     //     onComplete: () => {
     //       bestEdMusic.play();
     //       this.time.delayedCall(bestEdMusic.duration * 500, () => {
     //         this.tweens.add({
-    //           targets: bestEdLogo,
+    //           targets: [bestEdLogo, bestEdSlogan],
     //           alpha: 0,
     //           duration: 2000,
+    //           // text under the logo
     //           onComplete: () => {
     //             brianMusic.play();
     //             this.tweens.add({
@@ -70,6 +99,7 @@ export default class MenuScene extends Phaser.Scene {
     //                     alpha: 0,
     //                     duration: 2000,
     //                     onComplete: () => {
+    //                       this.logoSequenceCompleted = true;
     //                       this.showMainMenu();
     //                     },
     //                   });
@@ -84,17 +114,48 @@ export default class MenuScene extends Phaser.Scene {
     // }
 
     // showMainMenu() {
-    //   const themeMusic = this.sound.add("theme", { loop: false, volume: 0.5 });
+    //   const themeMusic = this.sound.add("menuTheme", {
+    //     loop: false,
+    //     volume: 0.2,
+    //   });
 
     //   this.cameras.main.fadeIn(2000);
     //   themeMusic.play();
 
-    //   this.add
-    //     .image(this.scale.width / 2, this.scale.height / 2, "menuBackground")
-    //     .setScale(1);
+    //   const backgroundImage = this.add.image(
+    //     this.scale.width / 2,
+    //     this.scale.height / 2,
+    //     "menuBackground"
+    //   );
 
-    //   this.startButton = this.add
-    //     .text(this.scale.width / 2, this.scale.height / 2, "Start", {
+    //   // Calculate the scale factor to cover the screen
+    //   const scaleX = this.scale.width / backgroundImage.width;
+    //   const scaleY = this.scale.height / backgroundImage.height;
+    //   const scale = Math.max(scaleX, scaleY);
+    //   backgroundImage.setScale(scale).setScrollFactor(0);
+
+    //   this.tweens.add({
+    //     targets: backgroundImage,
+    //     alpha: 1,
+    //     scale: scale * 1.2, // Adjust the scale to zoom in
+    //     duration: 2000,
+    //     ease: "Power2",
+    //   });
+
+    //   // Create the button background
+    //   this.startButtonBackground = this.add.graphics();
+    //   this.startButtonBackground.fillStyle(0xff0000, 1);
+    //   this.startButtonBackground.fillRoundedRect(
+    //     this.scale.width / 2 - 150,
+    //     (this.scale.height * 3) / 4 - 40,
+    //     300,
+    //     80,
+    //     20
+    //   );
+
+    //   // Game start button
+    //   this.startButtonText = this.add
+    //     .text(this.scale.width / 2, (this.scale.height * 3) / 4, "Begin game", {
     //       fontFamily: "Arial",
     //       fontSize: "48px",
     //       color: "#ffffff",
@@ -102,9 +163,24 @@ export default class MenuScene extends Phaser.Scene {
     //     .setOrigin(0.5)
     //     .setInteractive()
     //     .on("pointerdown", () => {
-    //       themeMusic.stop(); // Stop the music
-    //       this.cameras.main.fadeOut(1000, 0, 0, 0, () => {
-    //         this.scene.start("GameScene");
+    //       // Stop music from playing more than once
+    //       if (this.bestEdMusic.isPlaying) {
+    //         this.bestEdMusic.stop();
+    //       }
+    //       if (this.brianMusic.isPlaying) {
+    //         this.brianMusic.stop();
+    //       }
+    //       themeMusic.stop(); // Stop the menu theme music
+    //       this.tweens.add({
+    //         targets: [this.startButtonBackground, this.startButtonText],
+    //         scaleX: 1,
+    //         scaleY: 1,
+    //         duration: 100,
+    //         onComplete: () => {
+    //           this.cameras.main.fadeOut(0, 0, 0, 0, () => {
+    //             this.scene.start("GameScene");
+    //           });
+    //         },
     //       });
     //     });
 
