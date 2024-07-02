@@ -136,7 +136,7 @@ export default class Cannon {
       velocityY += gravity * timeStep;
 
       // Stop if the projectile goes below the ground
-      if (startY > this.scene.sys.game.config.height) {
+      if (startY > this.scene.ground.body.y) {
         break;
       }
     }
@@ -155,8 +155,8 @@ export default class Cannon {
 
   shoot(pointer) {
     // Calculate projectile spawn position
-    const barrelLength = this.barrel.width * this.barrel.scaleX * 0.7;
-    const angle = this.barrel.rotation;
+    var barrelLength = this.barrel.width * this.barrel.scaleX * 0.7; // Var so that it can be read out of scope
+    var angle = this.barrel.rotation;
     const barrelEndX = this.x + Math.cos(angle) * barrelLength;
     const barrelEndY = this.y + Math.sin(angle) * barrelLength;
 
@@ -164,8 +164,10 @@ export default class Cannon {
     const projectile = this.scene.physics.add.image(
       barrelEndX,
       barrelEndY,
-      "circle1"
+      "player1"
     );
+
+    projectile.setScale(0.5);
 
     // Use the same velocity multiplier as in drawTrajectory
     const velocityMultiplier = 0.8;
@@ -177,41 +179,86 @@ export default class Cannon {
       Math.sin(-angle) * velocity
     );
 
+    // Set the projectile body to be a circle for physics calculations
+    projectile.body.setCircle(projectile.width / 2);
+    projectile.body.setBounce(0.75); // Lower bounce for more realistic behavior
+    projectile.body.setFriction(0.1); // Lower friction for better rolling
+
+    let hasCollided = false;
+
     // Set up collision with ground
     this.scene.physics.add.collider(projectile, this.scene.ground, () => {
-      // Create impact effect
-      const impactEffect = this.scene.add.sprite(
-        projectile.x,
-        projectile.y,
-        "cannonImpact"
-      );
-      impactEffect.play("impact");
-      // Fade out impact effect
-      this.scene.tweens.add({
-        targets: impactEffect,
-        alpha: 0,
-        duration: 500,
-        onComplete: () => {
-          impactEffect.destroy();
-        },
-      });
-      projectile.destroy();
-      this.scene.sound.play("playerImpact1");
+      if (!hasCollided) {
+        hasCollided = true;
+
+        // Create impact effect
+        const impactEffect = this.scene.add.sprite(
+          projectile.x,
+          projectile.y,
+          "cannonImpact"
+        );
+        impactEffect.play("impact");
+
+        // Fade out impact effect
+        this.scene.tweens.add({
+          targets: impactEffect,
+          alpha: 0,
+          duration: 1000,
+          onComplete: () => {
+            impactEffect.destroy();
+          },
+        });
+
+        // Play impact sound only once
+        this.scene.sound.play("playerImpact1");
+
+        // Change projectile to player2 sprite
+        projectile.setTexture("player2");
+
+        // Apply angular velocity to make it roll
+        projectile.body.setAngularVelocity(projectile.body.velocity.x);
+
+        // After 2 seconds of impact, destroy the projectile
+        this.scene.time.delayedCall(2000, () => {
+          // Fade out the projectile
+          this.scene.tweens.add({
+            targets: projectile,
+            alpha: 0,
+            duration: 500,
+            onComplete: () => {
+              projectile.destroy();
+            },
+          });
+        });
+      }
     });
 
     // Play cannon shot effects from the barrel end
     this.scene.sound.play("cannonShot");
+    barrelLength = this.barrel.width * this.barrel.scaleX * 0.7;
+    angle = this.barrel.rotation;
+
+    const effectOffset = 1.1; // Adjust this value slightly above 1 if needed
+    const shotEffectX =
+      this.x + Math.cos(angle) * (barrelLength * effectOffset);
+    const shotEffectY =
+      this.y + Math.sin(angle) * (barrelLength * effectOffset - 200);
+
     const shotEffect = this.scene.add.sprite(
-      barrelEndX,
-      barrelEndY,
+      shotEffectX,
+      shotEffectY,
       "cannonShot"
     );
     shotEffect.play("shot");
+
+    // Rotate shot effect to match the cannon angle
+    shotEffect.rotation = angle;
+
     // Fade out shot effect
     this.scene.tweens.add({
       targets: shotEffect,
       alpha: 0,
-      duration: 500,
+      duration: 1000,
       onComplete: () => {
         shotEffect.destroy();
       },
