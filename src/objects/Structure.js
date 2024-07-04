@@ -13,9 +13,18 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.add.existing(this);
 
     // Set up physics properties
-    this.setCollideWorldBounds(true);
-    this.setBounce(0);
-    this.setFriction(1);
+    this.setCollideWorldBounds(true); // Ensure the object collides with world bounds
+    this.setBounce(0.2); // Slight bounce to simulate tumble
+    this.setFriction(1); // High friction to prevent sliding
+    this.body.setAllowGravity(true); // Enable gravity for tumbling
+
+    // Ensure the world bounds are set to the game's width and height
+    this.scene.physics.world.setBounds(
+      0,
+      0,
+      this.scene.sys.game.config.width,
+      this.scene.sys.game.config.height
+    );
 
     // Enable collision with the ground
     this.scene.physics.add.collider(this, this.scene.ground);
@@ -48,13 +57,9 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
     this.setTexture(`${this.type}${textureIndex}`);
   }
 
-  // Method to handle collision with projectile
   handleProjectileCollision(projectile) {
-    // Calculate damage based on projectile velocity or other factors
     const damage = 25; // Adjust this value as needed
     this.damage(damage);
-
-    // Destroy the projectile
     projectile.destroy();
   }
 }

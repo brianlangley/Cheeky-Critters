@@ -168,6 +168,7 @@ export default class Cannon {
     );
 
     projectile.setScale(0.5);
+    this.scene.cannon.projectile = projectile; // Add this line to reference the projectile in the scene.
 
     // Use the same velocity multiplier as in drawTrajectory
     const velocityMultiplier = 1.2;
@@ -181,8 +182,8 @@ export default class Cannon {
 
     // Set the projectile body to be a circle for physics calculations
     projectile.body.setCircle(projectile.width / 2);
-    projectile.body.setBounce(0.75); // Lower bounce for more realistic behavior
-    projectile.body.setFriction(0.1); // Lower friction for better rolling
+    projectile.body.setBounce(0.2); // Lower bounce for more realistic behavior
+    projectile.body.setFriction(10); // Increase friction to prevent sliding
 
     let hasCollided = false;
 

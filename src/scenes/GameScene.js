@@ -42,69 +42,69 @@ export default class GameScene extends Phaser.Scene {
 
     this.ground = ground;
 
-    // Create the cannon
     this.cannon = new Cannon(this, 100, this.scale.height - groundHeight - 50);
 
-    // Structures
     this.structures = this.physics.add.group();
 
     this.createHouseStructure();
 
-    // Set world gravity
     this.physics.world.gravity.y = 600;
 
-    // Collisions
     this.physics.add.collider(this.structures, this.ground);
     this.physics.add.collider(this.structures, this.structures);
+
+// Ensure both this.cannon.projectile and this.structures exist before adding the collider
+if (this.cannon && this.cannon.projectile && this.structures) {
+    this.physics.add.collider(
+      this.cannon.projectile,
+      this.structures,
+      this.handleProjectileStructureCollision,
+      null,
+      this
+    );
+} else {
+    console.warn('Projectile or structures are undefined, collider not added');
+}
+  }
+
+  // Add this method to handle the collision
+  handleProjectileStructureCollision(projectile, structure) {
+    structure.handleProjectileCollision(projectile);
   }
 
   createHouseStructure() {
     const baseX = Phaser.Math.Between(600, this.scale.width - 200);
-    const baseY = this.scale.height - this.ground.height - 5; // Adjust baseY to spawn 5 pixels above the ground
-    const width = Phaser.Math.Between(50, 100);
-    const baseHeight = 10;
-    const spaceBetweenFloors = 10;
+    const baseY = this.scale.height - this.ground.height;
+    const wallHeight = 150;
 
-    const spawnFloors = (x, y, width, height, count = 1) => {
-      for (let i = 0; i < count; i++) {
-        const floorY = y - height - 5; // Adjust floorY to spawn each floor 5 pixels above the ground
-        const floor = this.createStructurePart(x, floorY, "rectangle");
-        // Ensure space between floors and not stacking on top of each other (x axis)
-        x += width + spaceBetweenFloors + 125;
-        floor.setSize(width, height);
-        // rotate the floor 90 degrees
-        floor.angle = 90;
-      }
+    const createBeam = (x, y, rotation) => {
+      const beam = this.createStructurePart(x, y, "rectangle", rotation);
+      this.structures.add(beam); // Add beam to structures group here
     };
 
-    spawnFloors(baseX, baseY, width, baseHeight, 2);
-    
+    const degreesToRadians = (degrees) => degrees * (Math.PI / 180);
+
+    createBeam(baseX - 90, baseY - wallHeight, degreesToRadians(0));
+    createBeam(baseX + 90, baseY - wallHeight, degreesToRadians(0));
+    createBeam(baseX, baseY - wallHeight * 2, degreesToRadians(90));
   }
 
   createStructurePart(x, y, type, rotation = 0) {
     const part = new Structure(this, x, y, type);
     part.setRotation(rotation);
-    this.structures.add(part);
-    return part;
+    return part; // Return the part without adding to the group here
   }
 
   update() {
-    if (this.cannon.projectile) {
-      this.physics
-        .overlapRect(
-          this.cannon.projectile.x - 5,
-          this.cannon.projectile.y - 5,
-          10,
-          10,
-          false,
-          true,
-          this.structures.getChildren()
-        )
-        .forEach((structure) => {
-          const velocity = this.cannon.projectile.body.velocity.length();
-          structure.damage(Math.floor(velocity / 10));
-          this.cannon.projectile.destroy();
-        });
-    }
+
+      if (this.cannon.projectile) {
+        this.physics.collide(
+          this.cannon.projectile,
+          this.structures,
+          this.handleProjectileStructureCollision,
+          null,
+          this
+        );
+      }
   }
 }
