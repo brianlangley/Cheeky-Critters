@@ -59,30 +59,26 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createHouseStructure() {
-    const baseX = 600;
-    const baseY = this.scale.height - this.ground.height;
-    const width = 50;
-    const height = 25;
+    const baseX = Phaser.Math.Between(600, this.scale.width - 200);
+    const baseY = this.scale.height - this.ground.height - 5; // Adjust baseY to spawn 5 pixels above the ground
+    const width = Phaser.Math.Between(50, 100);
+    const baseHeight = 10;
+    const spaceBetweenFloors = 10;
 
-    // Create base floor
-    for (let i = 0; i < 5; i++) {
-      this.createStructurePart(baseX + i * width, baseY - height / 2, "rectangle", 0);
-    }
+    const spawnFloors = (x, y, width, height, count = 1) => {
+      for (let i = 0; i < count; i++) {
+        const floorY = y - height - 5; // Adjust floorY to spawn each floor 5 pixels above the ground
+        const floor = this.createStructurePart(x, floorY, "rectangle");
+        // Ensure space between floors and not stacking on top of each other (x axis)
+        x += width + spaceBetweenFloors + 125;
+        floor.setSize(width, height);
+        // rotate the floor 90 degrees
+        floor.angle = 90;
+      }
+    };
 
-    // Create left wall
-    for (let i = 1; i <= 4; i++) {
-      this.createStructurePart(baseX, baseY - i * height - height / 2, "rectangle", 0);
-    }
-
-    // Create right wall
-    for (let i = 1; i <= 4; i++) {
-      this.createStructurePart(baseX + 4 * width, baseY - i * height - height / 2, "rectangle", 0);
-    }
-
-    // Create roof
-    for (let i = 0; i < 5; i++) {
-      this.createStructurePart(baseX + i * width, baseY - 5 * height - height / 2, "rectangle", Math.PI / 4);
-    }
+    spawnFloors(baseX, baseY, width, baseHeight, 2);
+    
   }
 
   createStructurePart(x, y, type, rotation = 0) {
