@@ -170,7 +170,7 @@ export default class Cannon {
     projectile.setScale(0.5);
 
     // Use the same velocity multiplier as in drawTrajectory
-    const velocityMultiplier = 0.8;
+    const velocityMultiplier = 1.2;
     const velocity = this.currentPower * velocityMultiplier;
 
     // Use the negative angle for correct projectile direction
