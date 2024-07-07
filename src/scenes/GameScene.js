@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Cannon from "../objects/Cannon";
 import Structure from "../objects/Structure";
+import Enemy from "../objects/Enemy";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -48,13 +49,18 @@ export default class GameScene extends Phaser.Scene {
 
     this.createHouseStructure();
 
+    this.enemies = new Enemy(this, 0, 0, "enemy1").spawn(
+      this,
+      this.structures,
+      this.ground
+    );
+
     this.physics.world.gravity.y = 600;
 
     this.physics.add.collider(this.structures, this.ground);
     this.physics.add.collider(this.structures, this.structures);
 
-    // Ensure both this.cannon.projectile and this.structures exist before adding the collider
-    if (this.cannon && this.cannon.projectile && this.structures) {
+    if (this.cannon && this.cannon.projectile) {
       this.physics.add.collider(
         this.cannon.projectile,
         this.structures,
@@ -62,33 +68,45 @@ export default class GameScene extends Phaser.Scene {
         null,
         this
       );
-    } else {
-      console.warn(
-        "Projectile or structures are undefined, collider not added"
+      this.physics.add.collider(
+        this.cannon.projectile,
+        this.enemies,
+        this.handleProjectileEnemyCollision,
+        null,
+        this
       );
     }
   }
 
-  // Add this method to handle the collision
   handleProjectileStructureCollision(projectile, structure) {
     structure.handleProjectileCollision(projectile);
+    this.handleProjectileCollision(projectile);
+  }
 
-    // Apply bounce effect to the projectile
-    projectile.setBounce(0.5); 
+  handleProjectileEnemyCollision(projectile, enemy) {
+    enemy.damage();
+    this.handleProjectileCollision(projectile);
+  }
+
+  handleProjectileCollision(projectile) {
+    projectile.setBounce(0.5);
     projectile.setVelocity(
       projectile.body.velocity.x * -0.5,
       projectile.body.velocity.y * -0.5
-    ); // Reverse direction slightly and reduce speed to stimulate an impact
-
-    // Add sound effect for bounce
+    );
     this.sound.play("bounce");
 
-    // Set a timer to destroy the projectile after a delay
     this.time.delayedCall(2000, () => {
       if (projectile) {
         projectile.destroy();
       }
     });
+  }
+
+  handleMissedShot() {
+    if (this.enemies && this.enemies.getChildren().length > 0) {
+      this.sound.play("taunt");
+    }
   }
 
   createHouseStructure() {
@@ -98,7 +116,7 @@ export default class GameScene extends Phaser.Scene {
 
     const createBeam = (x, y, rotation) => {
       const beam = this.createStructurePart(x, y, "rectangle", rotation);
-      this.structures.add(beam); // Add beam to structures group here
+      this.structures.add(beam);
     };
 
     const degreesToRadians = (degrees) => degrees * (Math.PI / 180);
@@ -111,7 +129,7 @@ export default class GameScene extends Phaser.Scene {
   createStructurePart(x, y, type, rotation = 0) {
     const part = new Structure(this, x, y, type);
     part.setRotation(rotation);
-    return part; // Return the part without adding to the group here
+    return part;
   }
 
   update() {
@@ -123,6 +141,15 @@ export default class GameScene extends Phaser.Scene {
         null,
         this
       );
+      if (this.enemies) {
+        this.physics.collide(
+          this.cannon.projectile,
+          this.enemies,
+          this.handleProjectileEnemyCollision,
+          null,
+          this
+        );
+      }
     }
   }
 }
