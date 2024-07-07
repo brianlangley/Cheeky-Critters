@@ -15,7 +15,7 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
     // Set up physics properties
     this.setCollideWorldBounds(true); // Ensure the object collides with world bounds
     this.setBounce(0.2); // Slight bounce to simulate tumble
-    this.setFriction(1); // High friction to prevent sliding
+    this.setFriction(10); // High friction to prevent sliding
     this.body.setAllowGravity(true); // Enable gravity for tumbling
 
     // Ensure the world bounds are set to the game's width and height
@@ -58,8 +58,7 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
   }
 
   handleProjectileCollision(projectile) {
-    const damage = 25; // Adjust this value as needed
+    const damage = 25; 
     this.damage(damage);
-    projectile.destroy();
   }
 }

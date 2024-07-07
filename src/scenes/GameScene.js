@@ -53,23 +53,42 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.structures, this.ground);
     this.physics.add.collider(this.structures, this.structures);
 
-// Ensure both this.cannon.projectile and this.structures exist before adding the collider
-if (this.cannon && this.cannon.projectile && this.structures) {
-    this.physics.add.collider(
-      this.cannon.projectile,
-      this.structures,
-      this.handleProjectileStructureCollision,
-      null,
-      this
-    );
-} else {
-    console.warn('Projectile or structures are undefined, collider not added');
-}
+    // Ensure both this.cannon.projectile and this.structures exist before adding the collider
+    if (this.cannon && this.cannon.projectile && this.structures) {
+      this.physics.add.collider(
+        this.cannon.projectile,
+        this.structures,
+        this.handleProjectileStructureCollision,
+        null,
+        this
+      );
+    } else {
+      console.warn(
+        "Projectile or structures are undefined, collider not added"
+      );
+    }
   }
 
   // Add this method to handle the collision
   handleProjectileStructureCollision(projectile, structure) {
     structure.handleProjectileCollision(projectile);
+
+    // Apply bounce effect to the projectile
+    projectile.setBounce(0.5); 
+    projectile.setVelocity(
+      projectile.body.velocity.x * -0.5,
+      projectile.body.velocity.y * -0.5
+    ); // Reverse direction slightly and reduce speed to stimulate an impact
+
+    // Add sound effect for bounce
+    this.sound.play("bounce");
+
+    // Set a timer to destroy the projectile after a delay
+    this.time.delayedCall(2000, () => {
+      if (projectile) {
+        projectile.destroy();
+      }
+    });
   }
 
   createHouseStructure() {
@@ -96,15 +115,14 @@ if (this.cannon && this.cannon.projectile && this.structures) {
   }
 
   update() {
-
-      if (this.cannon.projectile) {
-        this.physics.collide(
-          this.cannon.projectile,
-          this.structures,
-          this.handleProjectileStructureCollision,
-          null,
-          this
-        );
-      }
+    if (this.cannon.projectile) {
+      this.physics.collide(
+        this.cannon.projectile,
+        this.structures,
+        this.handleProjectileStructureCollision,
+        null,
+        this
+      );
+    }
   }
 }
