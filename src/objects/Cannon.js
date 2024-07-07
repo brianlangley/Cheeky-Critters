@@ -104,7 +104,7 @@ export default class Cannon {
       pointer.y
     );
 
-    // Draw the trajectory starting from the barrel end
+    // Draw the trajectory aimline starting from the barrel end
     this.drawTrajectory(
       barrelEndX,
       barrelEndY,
@@ -168,9 +168,10 @@ export default class Cannon {
     );
 
     projectile.setScale(0.5);
+    this.scene.cannon.projectile = projectile; 
 
     // Use the same velocity multiplier as in drawTrajectory
-    const velocityMultiplier = 0.8;
+    const velocityMultiplier = 1.2;
     const velocity = this.currentPower * velocityMultiplier;
 
     // Use the negative angle for correct projectile direction
@@ -181,8 +182,8 @@ export default class Cannon {
 
     // Set the projectile body to be a circle for physics calculations
     projectile.body.setCircle(projectile.width / 2);
-    projectile.body.setBounce(0.75); // Lower bounce for more realistic behavior
-    projectile.body.setFriction(0.1); // Lower friction for better rolling
+    projectile.body.setBounce(0.5); // Add bounce to simulate impact
+    projectile.body.setFriction(0.1); // Add slight friction to prevent sliding
 
     let hasCollided = false;
 
@@ -212,7 +213,7 @@ export default class Cannon {
         // Play impact sound only once
         this.scene.sound.play("playerImpact1");
 
-        // Change projectile to player2 sprite
+        // Change projectile to player2 sprite post impact
         projectile.setTexture("player2");
 
         // Apply angular velocity to make it roll
@@ -232,6 +233,15 @@ export default class Cannon {
         });
       }
     });
+
+    // Set up collision with structures
+    this.scene.physics.add.collider(
+      projectile,
+      this.scene.structures,
+      this.scene.handleProjectileStructureCollision,
+      null,
+      this.scene
+    );
 
     // Play cannon shot effects from the barrel end
     this.scene.sound.play("cannonShot");
