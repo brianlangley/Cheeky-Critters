@@ -58,7 +58,28 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
   }
 
   handleProjectileCollision(projectile) {
-    const damage = 25; 
+    const damage = 25;
     this.damage(damage);
+  
+    // Calculate the impact force based on the projectile's velocity
+    const impactForce = Math.sqrt(projectile.body.velocity.x ** 2 + projectile.body.velocity.y ** 2);
+  
+    // Adjust the angle based on both health percentage and impact force
+    const healthPercentage = this.health / this.maxHealth;
+    let angleAdjustment = 0;
+    if (healthPercentage > 0.75) {
+      angleAdjustment = 0; // Slightly damaged, still standing straight
+    } else if (healthPercentage > 0.5) {
+      angleAdjustment = -10; // More damaged, starting to fall
+    } else if (healthPercentage > 0.25) {
+      angleAdjustment = -30; // Heavily damaged, falling further
+    } else {
+      angleAdjustment = -90; // Almost destroyed, lying flat
+    }
+  
+    // Apply additional rotation based on the impact force
+    // The magic numbers here (e.g., 1000, 0.05) can be adjusted based on gameplay testing for a more realistic effect
+    const velocityBasedRotation = (impactForce / 1000) * 0.05 * angleAdjustment;
+    this.setAngle(this.angle + angleAdjustment + velocityBasedRotation);
   }
 }
