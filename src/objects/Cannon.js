@@ -235,10 +235,10 @@ export default class Cannon {
     this.scene.sound.play("playerFlying");
     this.aimLine.clear();
 
-    // Add this at the end of the shoot method
     this.scene.time.delayedCall(3000, () => {
       if (this.scene.cannon.projectile && this.scene.cannon.projectile.active) {
         this.scene.handleMissedShot();
+        this.scene.scoring.addScore(-50); // Subtract 50 points for a missed shot
       }
     });
   }

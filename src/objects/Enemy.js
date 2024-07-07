@@ -9,11 +9,27 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.body.setCollideWorldBounds(true);
+    this.body.setCollideWorldBounds(false);
+  }
+
+  update() {
+    // Check if the enemy is below the ground
+    if (this.y > this.scene.ground.y) {
+      this.damage();
+    }
+
+    // Check if the enemy has left the edge of the map
+    if (this.x < 0 || this.x > this.scene.sys.game.config.width) {
+      this.damage();
+    }
   }
 
   damage() {
     this.scene.sound.play("enemyDeath");
+    let points = 100;
+    if (this.texture.key === "enemy2") points = 200;
+    if (this.texture.key === "enemy3") points = 300;
+    this.scene.scoring.addScore(points);
     this.destroy();
   }
 
@@ -58,7 +74,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
       );
       enemies.add(enemy);
 
-      scene.physics.add.collider(enemy, ground);
+      scene.physics.add.collider(enemy, ground, null, function () {
+        return enemy.y <= ground.y;
+      });
       scene.physics.add.collider(enemy, structures);
     }
 
