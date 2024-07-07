@@ -29,6 +29,13 @@ module.exports = {
           filename: "assets/[hash][ext][query]",
         },
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "fonts/[hash][ext][query]",
+        },
+      },
     ],
   },
   plugins: [

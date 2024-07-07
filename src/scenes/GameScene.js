@@ -4,6 +4,7 @@ import Structure from "../objects/Structure";
 import Enemy from "../objects/Enemy";
 import Scoring from "../objects/Scoring";
 
+
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: "GameScene" });
@@ -84,6 +85,7 @@ export default class GameScene extends Phaser.Scene {
     // Add a button to start a new game while keeping the score
     const newGameButton = this.add
       .text(this.scale.width - 16, 16, "New Game", {
+        fontFamily: "AngryBirds",
         fontSize: "32px",
         fill: "#ff0000",
         backgroundColor: "#000",
@@ -199,6 +201,22 @@ export default class GameScene extends Phaser.Scene {
     });
   }
 
+  gameOver() {
+    const gameOverText = this.add
+      .text(this.scale.width / 2, this.scale.height / 2, "Game Over", {
+        fontFamily: "AngryBirds",
+        fontSize: "64px",
+        fill: "#ff0000",
+      })
+      .setOrigin(0.5);
+
+    this.time.delayedCall(5000, () => {
+      gameOverText.destroy();
+      this.scoring.resetScore();
+      this.reloadMap();
+    });
+  }
+
   reloadMap() {
     // Destroy existing objects
     if (this.enemies) {
@@ -238,5 +256,9 @@ export default class GameScene extends Phaser.Scene {
         this
       );
     }
+
+    // Reset cannon shots
+    this.cannon.shotsLeft = 7;
+    this.cannon.shotCounterText.setText(`Shots: ${this.cannon.shotsLeft}`);
   }
 }

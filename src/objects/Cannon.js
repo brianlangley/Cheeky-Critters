@@ -5,6 +5,7 @@ export default class Cannon {
     this.scene = scene;
     this.x = x;
     this.y = y;
+    this.shotsLeft = 7;
 
     this.barrel = scene.add.sprite(x, y, "cannonBarrel").setOrigin(0.3, 0.5);
     this.base = scene.add.sprite(x, y, "cannonBase").setOrigin(0.3, -0.3);
@@ -22,6 +23,14 @@ export default class Cannon {
     this.base.setDepth(3);
     this.barrel.setDepth(2);
 
+    this.shotCounterText = this.scene.add
+      .text(this.x + 50, this.y + 100, `Shots: ${this.shotsLeft}`, {
+        fontSize: "36px",
+        fill: "#ff0000",
+        backgroundColor: "#000000",
+      })
+      .setOrigin(0.5);
+
     this.startPointerX = 0;
     this.startPointerY = 0;
     this.maxPower = 1000;
@@ -37,7 +46,10 @@ export default class Cannon {
   }
 
   onPointerDown(pointer) {
-    if (this.barrel.getBounds().contains(pointer.x, pointer.y)) {
+    if (
+      this.barrel.getBounds().contains(pointer.x, pointer.y) &&
+      this.shotsLeft > 0
+    ) {
       this.startPointerX = pointer.x;
       this.startPointerY = pointer.y;
       this.isDragging = true;
@@ -235,11 +247,11 @@ export default class Cannon {
     this.scene.sound.play("playerFlying");
     this.aimLine.clear();
 
-    this.scene.time.delayedCall(3000, () => {
-      if (this.scene.cannon.projectile && this.scene.cannon.projectile.active) {
-        this.scene.handleMissedShot();
-        this.scene.scoring.addScore(-50); // Subtract 50 points for a missed shot
-      }
-    });
+    this.shotsLeft -= 1;
+    this.shotCounterText.setText(`Shots Left: ${this.shotsLeft}`);
+
+    if (this.shotsLeft <= 0 && this.scene.enemies.countActive(true) > 0) {
+      this.scene.gameOver();
+    }
   }
 }
