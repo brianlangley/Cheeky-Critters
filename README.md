@@ -1,4 +1,5 @@
 # Cheeky Critters
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ae694896-f62d-49b0-a96d-e27857fbaf1c/deploy-status)](https://app.netlify.com/sites/cheekycritters/deploys)
 
 A phaser.io game inspired by Angry Birds and Happy Tree Friends-
 
@@ -196,7 +197,7 @@ The production-ready files will be in the `dist` directory.
 
 ## Accessing the Project
 
-Open your browser and navigate to: `http://localhost:8080/` or alternatively, its hosted online via Netlify at: [Cheeky Critters](https://cheeky-critters.netlify.app/)
+Open your browser and navigate to: `http://localhost:8080/` or alternatively, its hosted online via Netlify at: [Cheeky Critters](https://cheekycritters.netlify.app/)
 
 ## Progress Tracking
 
