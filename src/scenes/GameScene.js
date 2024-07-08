@@ -14,6 +14,8 @@ export default class GameScene extends Phaser.Scene {
     this.sound.play("ambience", { loop: true, volume: 0.2 });
     this.scoring = new Scoring(this);
 
+    document.getElementById("score-display").style.display = "block";
+
     const backgrounds = [
       "background1",
       "background2",
@@ -197,7 +199,15 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
-// If enemy leaves the screen, remove it
+  restartGame() {
+    // Reset the score
+    this.scoring.resetScore();
+
+    // Reload the map or reset game state as needed
+    this.reloadMap(); // Assuming this method already exists and resets the game state
+  }
+
+  // If enemy leaves the screen, remove it
   checkEnemyBounds() {
     this.enemies.getChildren().forEach((enemy) => {
       if (enemy.x < 0 || enemy.x > this.sys.game.config.width) {
