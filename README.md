@@ -4,20 +4,18 @@ A phaser.io game inspired by Angry Birds and Happy Tree Friends-
 
 ### Project details
 
-**Project naam:**  Cheeky Critters 
+**Project name:** Cheeky Critters  
 
-**Opdracht gever:** Best Education B.V. 
+**Client:** Best Education B.V.  
 
-**Project owners:** 
-Bob van der Berge 
+**Project owner:**  
+- Bob van der Berge  
 
-**Customer:**
-Miss Jacobs
+**Customer:**  
+- Miss Jacobs  
 
-**Teamlead:** Brian Langley
-
-**Teamleden:** 
-Brian Langley (Development + Design)
+**Team members:**  
+- Brian Langley (Development + Design)
 
 ## Table of Contents
 - [Cheeky Critters](#cheeky-critters)
@@ -53,6 +51,7 @@ Brian Langley (Development + Design)
     - [Actual Sprint Planning](#actual-sprint-planning)
   - [Project Files](#project-files)
   - [Logbook](#logbook)
+  - [Project Transfer](#project-transfer)
 
 ## Getting Started
 
@@ -137,11 +136,11 @@ To get a clear understanding of the game's intended design and mechanics, please
 
 ## Tech Breakdown
 
-- -Phaser:- Main game development framework.
-- -JavaScript:- Scripting language for game mechanics.
-- -HTML/CSS:- Used for structuring and styling the game interface.
-- -Webpack:- Tool for bundling game assets.
-- -Babel:- Transpiler to ensure compatibility across different browsers.
+- Phaser: Main game development framework.
+- JavaScript: Scripting language for game mechanics.
+- HTML/CSS: Used for structuring and styling the game interface.
+- Webpack: Tool for bundling game assets.
+- Babel: Transpiler to ensure compatibility across different browsers.
 
 ## Installation
 
@@ -409,4 +408,9 @@ For the enemy spawning, the code was straight forward and fairly easy to impleme
 
 As mentioned earlier, each enemy type has a score to it. Alongside this, damage to structures also grants 10 points. However missing shots deduct 50 points.Alongside this, a new game system and game over mechanism was added. For safety as there were some bugs, I also added a new game button on the top right that simply refreshes the map with a new type, and new enemies and structures (however the score continues, showing a level system) In the event the player uses all 7 shots, and not all enemies are destroyed, a game over shows and the game resets with the score set at 0.
 
-Day 18Merging the scoring branch to master and finalising documentation for this repo. I will also try set up a netlify for this project so it can be accessed with ease online. Also given time left, I will attempt to fix the issue with the score not rendering visually in game.
+**Day 18:**
+
+Merging the scoring branch to master and finalising documentation for this repo. I will also try set up a netlify for this project so it can be accessed with ease online. Also given time left, I will attempt to fix the issue with the score not rendering visually in game.
+
+
+## [Project Transfer](./docs/Project%20Transfer.md)
