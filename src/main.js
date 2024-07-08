@@ -4,6 +4,7 @@ import PreloadScene from "./scenes/PreloadScene";
 import MenuScene from "./scenes/MenuScene";
 import GameScene from "./scenes/GameScene";
 
+
 // Define the MainGame class to initialise and configure the game
 class MainGame {
   constructor() {

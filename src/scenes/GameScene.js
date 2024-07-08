@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import Cannon from "../objects/Cannon";
 import Structure from "../objects/Structure";
 import Enemy from "../objects/Enemy";
+import Scoring from "../objects/Scoring";
+
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -11,6 +13,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
     this.cameras.main.fadeIn(1000);
     this.sound.play("ambience", { loop: true, volume: 0.2 });
+    this.scoring = new Scoring(this);
 
     const backgrounds = [
       "background1",
@@ -76,6 +79,23 @@ export default class GameScene extends Phaser.Scene {
         this
       );
     }
+
+    this.checkGameState();
+
+    // Add a button to start a new game while keeping the score
+    const newGameButton = this.add
+      .text(this.scale.width - 16, 16, "New Game", {
+        fontFamily: "AngryBirds",
+        fontSize: "32px",
+        fill: "#ff0000",
+        backgroundColor: "#000",
+      })
+      .setOrigin(1, 0)
+      .setInteractive();
+
+    newGameButton.on("pointerdown", () => {
+      this.reloadMap();
+    });
   }
 
   handleProjectileStructureCollision(projectile, structure) {
@@ -85,6 +105,7 @@ export default class GameScene extends Phaser.Scene {
 
   handleProjectileEnemyCollision(projectile, enemy) {
     enemy.damage();
+    this.scoring.addScore(100); // Add 100 points for each enemy hit
     this.handleProjectileCollision(projectile);
   }
 
@@ -151,5 +172,93 @@ export default class GameScene extends Phaser.Scene {
         );
       }
     }
+
+    // Update each enemy
+    this.enemies.children.each((enemy) => {
+      enemy.update();
+    });
+
+    // Check to see if the enemies have left the screen
+    this.checkEnemyBounds();
+    this.checkGameState();
+  }
+
+  checkGameState() {
+    if (
+      (!this.enemies || this.enemies.getChildren().length === 0) &&
+      (!this.structures || this.structures.getChildren().length === 0)
+    ) {
+      this.reloadMap();
+    }
+  }
+
+  checkEnemyBounds() {
+    this.enemies.getChildren().forEach((enemy) => {
+      if (enemy.x < 0 || enemy.x > this.sys.game.config.width) {
+        // Assuming `damage` is a method on the enemy that handles damaging or removing the enemy
+        enemy.damage();
+      }
+    });
+  }
+
+  gameOver() {
+    const gameOverText = this.add
+      .text(this.scale.width / 2, this.scale.height / 2, "Game Over", {
+        fontFamily: "AngryBirds",
+        fontSize: "64px",
+        fill: "#ff0000",
+      })
+      .setOrigin(0.5);
+
+    this.time.delayedCall(5000, () => {
+      gameOverText.destroy();
+      this.scoring.resetScore();
+      this.reloadMap();
+    });
+  }
+
+  reloadMap() {
+    // Destroy existing objects
+    if (this.enemies) {
+      this.enemies.clear(true, true);
+    }
+    if (this.structures) {
+      this.structures.clear(true, true);
+    }
+
+    // Recreate structures and enemies
+    this.structures = this.physics.add.group();
+    this.createHouseStructure();
+
+    this.enemies = new Enemy(this, 0, 0, "enemy1").spawn(
+      this,
+      this.structures,
+      this.ground
+    );
+
+    // Set up colliders again
+    this.physics.add.collider(this.structures, this.ground);
+    this.physics.add.collider(this.structures, this.structures);
+
+    if (this.cannon && this.cannon.projectile) {
+      this.physics.add.collider(
+        this.cannon.projectile,
+        this.structures,
+        this.handleProjectileStructureCollision,
+        null,
+        this
+      );
+      this.physics.add.collider(
+        this.cannon.projectile,
+        this.enemies,
+        this.handleProjectileEnemyCollision,
+        null,
+        this
+      );
+    }
+
+    // Reset cannon shots
+    this.cannon.shotsLeft = 7;
+    this.cannon.shotCounterText.setText(`Shots: ${this.cannon.shotsLeft}`);
   }
 }

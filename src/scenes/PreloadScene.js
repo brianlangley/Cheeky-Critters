@@ -12,6 +12,12 @@ export default class PreloadScene extends Phaser.Scene {
 
   // Preload function to load assets before the game starts
   preload() {
+    // Font
+    // Load the custom font
+    this.load.script(
+      "webfont",
+      "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"
+    );
     // Logos
     // Best Educational
     this.load.image("BestEdLogo", "./assets/logo/Bit/logo.png");
@@ -130,5 +136,15 @@ export default class PreloadScene extends Phaser.Scene {
   create() {
     // Start the MenuScene
     this.scene.start("MenuScene");
+    // Ensure the font is available before starting the game
+    WebFont.load({
+      custom: {
+        families: ["AngryBirds"],
+        urls: ["./assets/font/angrybirds-regular.ttf"],
+      },
+      active: () => {
+        this.scene.start("MenuScene");
+      },
+    });
   }
 }

@@ -33,9 +33,16 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
   damage(amount) {
     this.health -= amount;
     this.health = Math.max(0, this.health);
+
+    // Update texture based on health
     this.updateTexture();
 
+    // Add score for the hit
+    this.scene.scoring.addScore(10);
+
+    // Check if health is zero or below
     if (this.health <= 0) {
+      this.scene.scoring.addScore(50); // Add score for destruction
       this.destroy();
     }
   }
@@ -58,12 +65,14 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
   }
 
   handleProjectileCollision(projectile) {
-    const damage = 25;
-    this.damage(damage);
-  
+    // Destroy the structure in one hit
+    this.damage(this.health);
+
     // Calculate the impact force based on the projectile's velocity
-    const impactForce = Math.sqrt(projectile.body.velocity.x ** 2 + projectile.body.velocity.y ** 2);
-  
+    const impactForce = Math.sqrt(
+      projectile.body.velocity.x ** 2 + projectile.body.velocity.y ** 2
+    );
+
     // Adjust the angle based on both health percentage and impact force
     const healthPercentage = this.health / this.maxHealth;
     let angleAdjustment = 0;
@@ -76,7 +85,7 @@ export default class Structure extends Phaser.Physics.Arcade.Sprite {
     } else {
       angleAdjustment = -90; // Almost destroyed, lying flat
     }
-  
+
     // Apply additional rotation based on the impact force
     // The magic numbers here (e.g., 1000, 0.05) can be adjusted based on gameplay testing for a more realistic effect
     const velocityBasedRotation = (impactForce / 1000) * 0.05 * angleAdjustment;
