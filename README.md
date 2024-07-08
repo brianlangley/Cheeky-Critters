@@ -45,6 +45,7 @@ A phaser.io game inspired by Angry Birds and Happy Tree Friends-
     - [Build for Production](#build-for-production)
     - [Using `http-server` (optional)](#using-http-server-optional)
   - [Accessing the Project](#accessing-the-project)
+  - [Powerpoint Presentation](#powerpoint-presentation)
   - [Progress Tracking](#progress-tracking)
   - [Checklist](#checklist)
   - [User Stories](#user-stories)
@@ -198,6 +199,11 @@ The production-ready files will be in the `dist` directory.
 ## Accessing the Project
 
 Open your browser and navigate to: `http://localhost:8080/` or alternatively, its hosted online via Netlify at: [Cheeky Critters](https://cheekycritters.netlify.app/)
+
+## [Powerpoint Presentation](https://www.canva.com/design/DAGKWZsXCwQ/1XsmluoDbC99PXlPtgD6QQ/view?utm_content=DAGKWZsXCwQ&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+
+PDF version of the presentation can be found [here](./docs/Cheeky%20Critters.pdf).
+
 
 ## Progress Tracking
 
