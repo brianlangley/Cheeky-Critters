@@ -199,6 +199,14 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+  restartGame() {
+    // Reset the score
+    this.scoring.resetScore();
+
+    // Reload the map or reset game state as needed
+    this.reloadMap(); // Assuming this method already exists and resets the game state
+  }
+
   // If enemy leaves the screen, remove it
   checkEnemyBounds() {
     this.enemies.getChildren().forEach((enemy) => {
