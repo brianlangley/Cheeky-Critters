@@ -4,7 +4,6 @@ import Structure from "../objects/Structure";
 import Enemy from "../objects/Enemy";
 import Scoring from "../objects/Scoring";
 
-
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: "GameScene" });
@@ -78,6 +77,11 @@ export default class GameScene extends Phaser.Scene {
         null,
         this
       );
+      /*
+      Process callback (null in this case): 
+      An optional callback function that lets you perform additional checks or processing to determine whether the collision callback should be called. 
+      By passing null, there's no additional processing needed, and the collision should be evaluated based solely on the physics engine's overlap detection.
+      */
     }
 
     this.checkGameState();
@@ -183,6 +187,7 @@ export default class GameScene extends Phaser.Scene {
     this.checkGameState();
   }
 
+  // Check if the game is over
   checkGameState() {
     if (
       (!this.enemies || this.enemies.getChildren().length === 0) &&
@@ -192,10 +197,10 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+// If enemy leaves the screen, remove it
   checkEnemyBounds() {
     this.enemies.getChildren().forEach((enemy) => {
       if (enemy.x < 0 || enemy.x > this.sys.game.config.width) {
-        // Assuming `damage` is a method on the enemy that handles damaging or removing the enemy
         enemy.damage();
       }
     });

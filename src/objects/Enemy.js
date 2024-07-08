@@ -24,6 +24,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  // Destroy the enemy and play the death sound
   damage() {
     this.scene.sound.play("enemyDeath");
     let points = 100;
@@ -33,6 +34,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.destroy();
   }
 
+  // Randomly select an enemy type
   getRandomEnemyType(enemyTypes) {
     const rand = Math.random();
     if (rand < 0.6) return enemyTypes[0];
@@ -40,6 +42,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     return enemyTypes[2];
   }
 
+  // Get a random position to spawn an enemy
   getEnemySpawnPosition(structures, ground, existingSpawns) {
     let position;
     let attempts = 0;
@@ -77,7 +80,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     return position;
   }
-
+  
+  // Spawn a group of enemies
   spawn(scene, structures, ground) {
     const enemyTypes = ["enemy1", "enemy2", "enemy3"];
     const enemyCount = Phaser.Math.Between(2, 4);

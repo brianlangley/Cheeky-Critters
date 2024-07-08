@@ -9,7 +9,7 @@ export default class Cannon {
 
     this.barrel = scene.add.sprite(x, y, "cannonBarrel").setOrigin(0.3, 0.5);
     this.base = scene.add.sprite(x, y, "cannonBase").setOrigin(0.3, -0.3);
-    this.barrel.setInteractive();
+    this.barrel.setInteractive(); // Interactive objects can listen to input events
 
     this.base.setScale(0.1);
     this.barrel.setScale(0.1);
@@ -19,6 +19,8 @@ export default class Cannon {
       lineStyle: { width: 2, color: 0xff0000, alpha: 0.5 },
     });
 
+
+    // Z-index to ensure that the aimline is drawn behind the cannon
     this.aimLine.setDepth(1);
     this.base.setDepth(3);
     this.barrel.setDepth(2);
@@ -39,6 +41,7 @@ export default class Cannon {
     this.setupEvents();
   }
 
+  // Add event listeners for the cannon
   setupEvents() {
     this.scene.input.on("pointerdown", this.onPointerDown, this);
     this.scene.input.on("pointermove", this.onPointerMove, this);
@@ -52,7 +55,7 @@ export default class Cannon {
     ) {
       this.startPointerX = pointer.x;
       this.startPointerY = pointer.y;
-      this.isDragging = true;
+      this.isDragging = true; //  Dragging is when you click and hold the mouse button down while moving the mouse.
     }
   }
 
@@ -72,6 +75,7 @@ export default class Cannon {
   aim(pointer) {
     this.aimLine.clear();
 
+    // Calculate the angle between the cannon and the pointer
     let angle = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
     angle = -angle;
 
@@ -86,11 +90,13 @@ export default class Cannon {
       pointer.y
     );
     this.currentPower = Phaser.Math.Clamp(distance, 0, this.maxPower);
+    // Power is the distance between the start and end points of the drag
 
     const barrelLength = this.barrel.width * this.barrel.scaleX * 0.7;
     const barrelEndX = this.x + Math.cos(angle) * barrelLength;
     const barrelEndY = this.y + Math.sin(angle) * barrelLength;
 
+    // Draw the trajectory line, which is a visual representation of the path the projectile will take
     const trajectoryAngle = Phaser.Math.Angle.Between(
       this.x,
       this.y,
@@ -106,12 +112,14 @@ export default class Cannon {
     );
   }
 
+  // Draw the trajectory line and ensures that a realistic path is drawn with a realistic arc
   drawTrajectory(startX, startY, angle, power) {
     const points = [];
     const gravity = 1200;
     const steps = 60;
     const timeStep = 1 / 60;
 
+    // The velocityMultiplier is used to increase the velocity of aiming to make it more interactive
     const velocityMultiplier = 1.5;
 
     let velocityX = Math.cos(angle) * power * velocityMultiplier;
@@ -120,6 +128,7 @@ export default class Cannon {
     for (let i = 0; i < steps; i++) {
       points.push({ x: startX, y: startY });
 
+      // Update the position of the projectile. This is done by adding the velocity to the position and then adding the gravity to the velocity
       startX += velocityX * timeStep;
       startY += velocityY * timeStep;
       velocityY += gravity * timeStep;
@@ -131,6 +140,7 @@ export default class Cannon {
 
     this.aimLine.lineStyle(2, 0xff0000, 0.5);
     this.aimLine.beginPath();
+    // Move the line to the starting point of the trajectory
     this.aimLine.moveTo(points[0].x, points[0].y);
 
     for (let i = 1; i < points.length; i++) {
@@ -141,7 +151,7 @@ export default class Cannon {
   }
 
   shoot(pointer) {
-    var barrelLength = this.barrel.width * this.barrel.scaleX * 0.7;
+    var barrelLength = this.barrel.width * this.barrel.scaleX * 0.7; // Var is used to ensure its accessible out of the scope
     var angle = this.barrel.rotation;
     const barrelEndX = this.x + Math.cos(angle) * barrelLength;
     const barrelEndY = this.y + Math.sin(angle) * barrelLength;
@@ -155,6 +165,7 @@ export default class Cannon {
     projectile.setScale(0.5);
     this.scene.cannon.projectile = projectile;
 
+    // Velocity of the projectile 
     const velocityMultiplier = 1.2;
     const velocity = this.currentPower * velocityMultiplier;
 
@@ -215,6 +226,8 @@ export default class Cannon {
       null,
       this.scene
     );
+
+    // The code block above is responsible for the collision detection between the projectile and the ground and structures.
 
     this.scene.sound.play("cannonShot");
     barrelLength = this.barrel.width * this.barrel.scaleX * 0.7;
