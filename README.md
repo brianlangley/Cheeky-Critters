@@ -52,6 +52,7 @@ A phaser.io game inspired by Angry Birds and Happy Tree Friends-
     - [Planned Sprint Planning](#planned-sprint-planning)
     - [Actual Sprint Planning](#actual-sprint-planning)
   - [Project Files](#project-files)
+  - [Test cases](#test-cases)
   - [Logbook](#logbook)
   - [Project Transfer](#project-transfer)
 
@@ -304,6 +305,10 @@ PDF version of the presentation can be found [here](./docs/Cheeky%20Critters.pdf
 - `Enemy.js` Enemy logic and behavior.
 - `Scoring.js` Scoring system implementation.
 - `Structure.js` Game structure and physics.
+
+## Test cases
+
+Conducted test cases can be found [here](./docs/Test%20Cases.md).
 
 ## Logbook
 

@@ -54,6 +54,15 @@ Here are the main refinement items and tasks for the Cheeky Critters project to 
 - [ ] Complete the project documentation, including a user manual and developer guide.
 - [ ] Ensure the deployment process is well-documented and easy to follow.
 
+#### 7. Additional Features (Optional)
+**Description:** Nice QOL features to add to the game.
+
+**Task List:**
+- [ ] Implement a pause menu with options to resume, restart, or exit the game.
+- [ ] Add a settings menu to adjust sound and display settings.
+- [ ] Include touch screen support for mobile devices.
+- [ ] Implement a high score system to track player achievements.
+
 ### Project Tickets
 
 #### Ticket 1: Integrate Matter.js for Structure Physics
@@ -79,6 +88,10 @@ Here are the main refinement items and tasks for the Cheeky Critters project to 
 #### Ticket 6: Documentation and Deployment
 **Description:** Finalise project documentation and set up deployment for online access.
 **Priority:** Medium
+
+#### Ticket 7: Quality of Life Features
+**Description:** Implement additional features such as a pause menu, settings menu, touch screen support, and high score system.
+**Priority:** Low
 
 Please address these items in the order of priority to ensure the project is completed successfully. If you have any questions or need further clarification, do not hesitate to reach out.
 
