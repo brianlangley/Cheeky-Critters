@@ -57,7 +57,7 @@ A phaser.io game inspired by Angry Birds and Happy Tree Friends-
 
 ## Getting Started
 
-Cheeky Critters combines the engaging mechanics of Angry Birds with the whimsical charm of Happy Tree Friends. Developed with the Phaser 3 game engine and Webpack, this game challenges players to launch critters using a slingshot, aiming to hit targets with as few moves as possible. The critters will ricochet off walls and obstacles, requiring strategic planning to achieve the goal.
+Cheeky Critters combines the engaging mechanics of Angry Birds with the whimsical charm of Happy Tree Friends. Developed with the Phaser 3 game engine and Webpack, this game challenges players to launch critters using a cannon, aiming to hit targets with as few moves as possible. The critters will ricochet off walls and obstacles, requiring strategic planning to achieve the goal.
 
 ### Objective
 
@@ -210,7 +210,7 @@ PDF version of the presentation can be found [here](./docs/Cheeky%20Critters.pdf
 ## Checklist
 
 - [x] Setup project structure and install dependencies.
-- [x] Implement basic game mechanics (slingshot, character launch).
+- [x] Implement basic game mechanics (cannon, character launch).
 - [x] Add sound effects and particle effects.
 - [x] Design and implement multiple levels.
 - [ ] Optimize game performance.
@@ -229,7 +229,7 @@ PDF version of the presentation can be found [here](./docs/Cheeky%20Critters.pdf
 
 | Milestone | Description | Due |
 | --------- | ----------- | --- |
-| #1 | Basic slingshot and impact mechanics- Basic character animations and states (neutral, launched, flying, impact)- Basic structure code logic and enemy spawning | Day 1 - 3 |
+| #1 | Basic cannon and impact mechanics- Basic character animations and states (neutral, launched, flying, impact)- Basic structure code logic and enemy spawning | Day 1 - 3 |
 | #2 | QA on impact and level/structure logic- Refining and building upon level design and structures- Sound effects for launching, impacts and reactions- Particle effects | Day 3 - 7 |
 | #3 | Character and enemy damage animations- Level difficulty tiers with more complex levels and challenges | Day 8 - 9 |
 | #4 | UI and Menu- Game music- Conduct extensive playtesting and debugging | Day 10 - 12 |
@@ -241,7 +241,7 @@ PDF version of the presentation can be found [here](./docs/Cheeky%20Critters.pdf
 **Day 1:**
 
 - Found all necessary assets, background, and ground textures. Separated the ground texture to define it manually within Phaser.
-- Expanded upon the Happy Tree Friends theme by utilizing a cannon instead of a slingshot.
+- Expanded upon the Happy Tree Friends theme by utilizing a cannon instead of a cannon.
 - Added two base characters and three enemy types, with mirroring and circular forms for easy collision and rotation.
 - Set max background width to 1920px and height to 600-620px.
 - Added effects for the cannon and impact using GIFs.
@@ -311,7 +311,7 @@ PDF version of the presentation can be found [here](./docs/Cheeky%20Critters.pdf
 
 I was busy finding all necessary assets, background and ground. The reason I separate this is to ensure that within Phaser, I can manually define the top of the ground texture as the beginning point and a border. If the ground was within the image, it would have been too arbitrary and had to be manually defined per image; making it tedious and inefficient.
 
-I opted to expand further upon the happy tree friends theme, and utilise a canon instead of a slingshot, making the game more characteristic and unique. 
+I opted to expand further upon the happy tree friends theme, and utilise a canon instead of a cannon, making the game more characteristic and unique. 
 
 Alongside this, I have two base characters for now, along side three enemy types. They are mirrored of one another, the players facing east and enemies west. They all have a circle form, ensuring easy collision and rotation.All background have been given a max width of 1920px, and heights vary between 600-620px.
 
@@ -356,7 +356,7 @@ I began the day by setting up the base map generation. This involved creating tw
 
 The ground sprite was established as the base point for future interactions with gravity and other sprites.
 
-After completing and merging the feature/basic-game-scene branch into the master, I started implementing a cannon. I chose a cannon over a slingshot to fit the darker style of Happy Tree Friends and to add a unique element to the game.
+After completing and merging the feature/basic-game-scene branch into the master, I started implementing a cannon. I chose a cannon over a cannon to fit the darker style of Happy Tree Friends and to add a unique element to the game.
 
 However, the implementation turned out to be more complex than initially anticipated. The main challenges included:
 
